@@ -15,6 +15,8 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/flights', require('./modules/flights/flight.routes'));
+app.use('/api/bookings', require('./modules/bookings/booking.routes'));
 
 // Global Error Handler
 app.use((err, req, res, next) => {
@@ -26,3 +28,4 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
