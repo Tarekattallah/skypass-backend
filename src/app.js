@@ -1,24 +1,21 @@
 const express = require('express');
-// يفتح الباب للطلبات الخارجية
-// بيسمح ده بيعمل دومان بين الباك والفروند 
 const cors = require('cors');
+require('./modules/airports/airport.model');
+require('./modules/airplanes/airplane.model');
+
 const authRoutes = require('./modules/auth/auth.routes');
-
+const flightRoutes = require('./modules/flights/flight.routes');
+const bookingRoutes = require('./modules/bookings/booking.routes');
 const app = express();
-
 app.use(cors());
 app.use(express.json());
- // للتأكد إن السيرفر شغال
+ 
 app.get('/', (req, res) => {
     res.json({ message: 'SkyPass API is running!' });
 });
-
-// Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/flights', require('./modules/flights/flight.routes'));
-app.use('/api/bookings', require('./modules/bookings/booking.routes'));
-
-// Global Error Handler
+app.use('/api/flights', flightRoutes);
+app.use('/api/bookings', bookingRoutes);
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     res.status(statusCode).json({
@@ -28,4 +25,3 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
-

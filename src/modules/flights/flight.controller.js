@@ -1,17 +1,21 @@
 const Flight = require('./flight.model');
 
-// بجيب كل الرحلات عشان نعرضها في الفرونت
+// 1. عرض كل الرحلات واقدر اعمل بحث (فلتر بسيط)
 exports.getAllFlights = async (req, res) => {
     try {
-        const flights = await Flight.find()
-            .populate('origin destination airplane'); // عشان يجيب بيانات المطار والطيارة مش بس الـ ID
+        const { origin, destination } = req.query;
+        let filter = {};
+
+        if (origin) filter.origin = origin;
+        if (destination) filter.destination = destination;
+
+        const flights = await Flight.find(filter).populate('origin destination');
         res.status(200).json({ status: 'success', data: flights });
     } catch (err) {
-        res.status(500).json({ status: 'error', message: err.message });
+        res.status(400).json({ status: 'error', message: err.message });
     }
 };
-
-// لو عايزة تضيفي رحلة جديدة (للأدمن)
+// 2. إضافة رحلة جديدة (للأدمن)
 exports.createFlight = async (req, res) => {
     try {
         const newFlight = await Flight.create(req.body);

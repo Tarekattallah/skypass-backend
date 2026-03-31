@@ -1,37 +1,8 @@
 const mongoose = require('mongoose');
-const airplaneSchema = new mongoose.Schema({
-    model: {
-        type: String,
-        required: [true, 'Model is required'],
-        trim: true,
-    },
-    economySeats: {
-        type: Number,
-        required: [true, 'Economy seats is required'],
-    },
 
-    businessSeats: {
-        type: Number,
-        required: [true, 'Business seats is required'],
-    },
+const airportSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    code: { type: String, required: true, unique: true },
+    city: { type: String, required: true },
 }, { timestamps: true });
-module.exports = mongoose.model('Airplane', airplaneSchema);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = mongoose.models.Airport || mongoose.model('Airport', airportSchema);
